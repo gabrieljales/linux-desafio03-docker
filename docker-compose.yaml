@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  app:
+    restart: on-failure
+    build: .
+    depends_on:
+      - postgres-database
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    ports:
+      - 3000:3000
+    command: npm run start
+    container_name: dio-node-api
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  postgres-database:
+    image: postgres:12
+    ports:
+      - "4532:5432"
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_NAME
